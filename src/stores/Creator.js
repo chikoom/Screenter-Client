@@ -118,6 +118,7 @@ export class Creator extends User {
       `${process.env.REACT_APP_PROD_URL}/api/creators/${creatorId}`,
       data
     )
+    
   }
 
   @action async getUser() {

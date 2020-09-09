@@ -155,7 +155,7 @@ const User = inject(
               </MDBTypography>
               <CreatorEventList
                 isOwner={false}
-                events={props.eventsStores.listOfEvents.slice(0, 3)}
+                events={props.eventsStores.listOfEventsForUserPage}
               />
             </MDBCol>
           </MDBRow>

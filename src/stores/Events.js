@@ -9,7 +9,7 @@ export class Events {
     @observable creators = []
     @observable hashtags = []
     @observable categories = []
-
+    listOfEventsForUserPage = this.listOfEvents.slice(0, 3)
     constructor() {
         this.init()
     }
