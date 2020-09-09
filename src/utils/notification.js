@@ -6,12 +6,12 @@ var AWS = require('aws-sdk')
 function notification(number, artist, time) {
     // Create publish parameters
     console.log(number)
-    const { REACT_APP_URL_KEY, REACT_APP_URL_SEC } = process.env
+    const { URL_KEY, URL_SEC } = process.env
 
     // Set region
     AWS.config.update({
-        accessKeyId: REACT_APP_URL_KEY,
-        secretAccessKey: REACT_APP_URL_SEC,
+        accessKeyId: URL_KEY,
+        secretAccessKey: URL_SEC,
         region: "us-east-1",
     });
     // const numbers = ['+972523641163','+972528228640','+972549093350']
@@ -27,7 +27,8 @@ function notification(number, artist, time) {
         }
     };
     // Create promise and SNS service object
-    var publishTextPromise = new AWS.SNS({ apiVersion: '2010-03-31' }).publish(params).promise();
+    // 2010-03-31
+    var publishTextPromise = new AWS.SNS({ apiVersion: '2017-10-17' }).publish(params).promise();
     console.log(publishTextPromise)
 
     // Handle promise's fulfilled/rejected states

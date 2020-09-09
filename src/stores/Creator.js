@@ -114,10 +114,13 @@ export class Creator extends User {
     )
   }
   @action async updateCreator(creatorId, data) {
+    console.log(creatorId , data )
     let updateCreator = await axios.put(
       `http://localhost:8080/api/creators/${creatorId}`,
       data
     )
+    console.log(updateCreator)
+    
   }
 
   @action async getUser() {

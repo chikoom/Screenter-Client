@@ -112,6 +112,7 @@ export class GeneralStore {
                 returnedUser.data.futureShows || null ,
                 returnedUser.data.pastShows || null 
                 )
+                
             console.log(this.currentUser)
         }
         else {

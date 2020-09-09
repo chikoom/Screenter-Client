@@ -1,8 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 import {
-  MDBBtn,
   MDBCard,
   MDBCardBody,
   MDBCardImage,
@@ -13,7 +10,6 @@ import {
 import { observer } from 'mobx-react'
 import Rating from '../Inputs/Rating'
 import './CreatorCard.css'
-import { useState } from 'react';
 import { useHistory } from 'react-router-dom'
 
 const CreatorCard = observer(props => {
