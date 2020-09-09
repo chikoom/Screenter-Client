@@ -14,16 +14,19 @@ const Homepage = inject(
 )(
   observer(props => {
     const history = useHistory()
-
-    const carouselEvents = props.eventsStores.listOfEvents
-      .slice(0, 3)
-      .map(event => ({
-        id: event.id,
-        image: event.coverImgURL,
-        header: event.name,
-        text: event.description,
-        link: `/event/:${event.id}`,
-      }))
+    const { listOfEvents } = props.eventsStores
+    const carouselEvents = [
+      listOfEvents[2],
+      listOfEvents[5],
+      listOfEvents[6],
+      listOfEvents[0],
+    ].map(event => ({
+      id: event.id,
+      image: event.coverImgURL,
+      header: event.name,
+      text: event.description,
+      link: `/event/:${event.id}`,
+    }))
     const navigateToEvent = id => {
       history.push(`/event/${id}`)
     }
