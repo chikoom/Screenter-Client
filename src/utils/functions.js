@@ -1,6 +1,9 @@
 export const shortenText = (text, numOfChars) => {
-  const suffix = text.length > numOfChars ? '...' : ''
-  return text.substring(0, numOfChars) + suffix
+  if (text) {
+    const suffix = text.length > numOfChars ? '...' : ''
+    return text.substring(0, numOfChars) + suffix
+
+  }
 }
 
 export const formatDate = date => {
@@ -18,7 +21,8 @@ export const formatDate = date => {
     date.getMonth() + 1
   }/${date.getFullYear()}`
   const hour = date.getHours()
-  const minutes = date.getMinutes()
+  let minutes = date.getMinutes()
+  minutes = (minutes < 10 ) ? `0${minutes}` : minutes
   return `${dayString} | ${dateString} | ${hour}:${minutes} `
 }
 

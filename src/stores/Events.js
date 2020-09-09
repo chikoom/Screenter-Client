@@ -9,7 +9,7 @@ export class Events {
     @observable creators = []
     @observable hashtags = []
     @observable categories = []
-
+    listOfEventsForUserPage = this.listOfEvents.slice(0, 3)
     constructor() {
         this.init()
     }
@@ -18,7 +18,7 @@ export class Events {
     }
     @action async getAllEvents() {
         const newEvents = []
-            let getData = await axios.get('http://localhost:8080/api/events?offset=0&limit=10')
+            let getData = await axios.get(`${process.env.REACT_APP_PROD_URL}/api/events?offset=0&limit=10`)
         console.log(this.listOfEvents)
         for (let d of getData.data) {
             let counter = 0
@@ -53,7 +53,7 @@ export class Events {
 
     @action async addEvent(creatorID) {
         const result = await axios.post(
-            'http://localhost:8080/api/events/event',
+            `${process.env.REACT_APP_PROD_URL}/api/events/event`,
             new Event(
                 null,
                 uuidv4().toString(),
@@ -89,7 +89,7 @@ export class Events {
     @action async addShow(showData) {
         console.log(showData)
         let addNewShow = await axios.post(
-            `http://localhost:8080/api/events/show`,
+            `${process.env.REACT_APP_PROD_URL}/api/events/show`,
             showData
         )
         console.log(addNewShow)
@@ -108,7 +108,7 @@ export class Events {
     }
     @action async deleteShow(showId, eventId) {
         let deleteShow = await axios.delete(
-            `http://localhost:8080/api/events?showId=${showId}`
+            `${process.env.REACT_APP_PROD_URL}/api/events?showId=${showId}`
         )
         console.log(deleteShow)
 

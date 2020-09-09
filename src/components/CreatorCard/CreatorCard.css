@@ -11,3 +11,21 @@
 .star-ratings {
   margin-bottom: 10px;
 }
+div[data-test='col'] {
+  margin-top: 40px;
+}
+.testimonial-card .card-up {
+  height: 0;
+}
+.testimonial-card .avatar {
+  width: 120px;
+
+  height: 120px;
+}
+.testimonial-card .avatar img {
+  width: auto;
+  min-height: 100%;
+}
+.card-body > p {
+  min-height: 50px;
+}

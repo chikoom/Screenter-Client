@@ -6,6 +6,7 @@ import BookModal from './BookEventModal'
 import CreateShowModal from './CreateShowModal'
 import { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
+import './Calendar.css'
 
 const Calendar = observer(props => {
   const [bookModalOpen, setModalOpen] = useState(false)
@@ -14,7 +15,7 @@ const Calendar = observer(props => {
   const [selectedDate, setSelectedDate] = useState({})
 
   const { currentUser, shows, currentEvent, isEventPage } = props
-  const [allShows, setAllShows] = useState(shows)
+  const [allShows, setAllShows] = useState([])
 
   const userEditor = props.userEditor
 
@@ -48,6 +49,9 @@ const Calendar = observer(props => {
 
   useEffect(() => {
     setAllShows(shows)
+    return () => {
+      setAllShows([])
+    }
   })
   return (
     <>

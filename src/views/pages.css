@@ -25,7 +25,7 @@ h4 {
   text-shadow: none !important;
 }
 .carousel-caption {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.8);
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
   text-shadow: 1px 2px 2px #000 !important;
   font-weight: 400 !important;
@@ -48,15 +48,26 @@ div[data-test='card'] .view .Ripple-parent {
 div[data-test='card'] .small-text {
   margin-bottom: 10px;
 }
-
+footer {
+  padding-top: 50px;
+}
 footer.bg-light {
   background-color: #333 !important;
   color: #eee;
   padding-top: 20px;
 }
 body {
-  background-color: rgb(233, 233, 233);
+  background-color: rgb(234, 234, 234);
 }
 nav {
   border-bottom: 10px solid rgb(0, 33, 48);
+}
+.navbar-collapse > .navbar-nav {
+  background-color: none;
+  box-shadow: none;
+}
+
+.event-creator-card {
+  margin: 20px auto;
+  max-width: 300px;
 }

@@ -4,7 +4,11 @@ import EventCard from './EventCard/EventCard'
 import SelectBox from './Inputs/SelectBox'
 import { inject, observer } from 'mobx-react'
 import AutoComplete from './Inputs/AutoComplete'
-import { useFetch, useInfiniteScroll, useLazyLoading } from '../utils/customHooks';
+import {
+  useFetch,
+  useInfiniteScroll,
+  useLazyLoading,
+} from '../utils/customHooks'
 
 // import './App.css' //Import here your file style
 
@@ -19,24 +23,24 @@ const EventGrid = inject('eventsStores')(
         case 'ADVANCE_PAGE':
           return { ...state, page: state.page + 1 }
         default:
-          return state;
+          return state
       }
-    }  
+    }
 
     const [pager, pagerDispatch] = useReducer(pageReducer, { page: 0 })
 
-    let bottomBoundaryRef = useRef(null);
-    useFetch(pager, imgDispatch);
-    useInfiniteScroll(bottomBoundaryRef, pagerDispatch);  
+    let bottomBoundaryRef = useRef(null)
+    useFetch(pager, imgDispatch)
+    useInfiniteScroll(bottomBoundaryRef, pagerDispatch)
 
     return (
       <>
         <MDBContainer>
           <MDBRow>
-            <MDBCol lg='8'>
+            <MDBCol lg='10'>
               <AutoComplete />
             </MDBCol>
-            <MDBCol lg='4'>
+            <MDBCol lg='2'>
               <SelectBox optionList={selectOptions} />
             </MDBCol>
           </MDBRow>
@@ -50,7 +54,11 @@ const EventGrid = inject('eventsStores')(
             ))}
           </MDBRow>
         </MDBContainer>
-        <div id='page-bottom-boundary' style={{ border: '1px solid red' }} ref={bottomBoundaryRef}></div>
+        <div
+          id='page-bottom-boundary'
+          style={{ border: '1px solid red' }}
+          ref={bottomBoundaryRef}
+        ></div>
       </>
     )
   })

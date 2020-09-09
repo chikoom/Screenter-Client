@@ -19,7 +19,7 @@ const EventGrid = inject('eventsStores')(
       history.push(`/event/${newEvent.data.id}`)
     }
 
-    console.log(props.isOwner);
+    console.log(props.isOwner)
 
     return (
       <>
@@ -27,7 +27,14 @@ const EventGrid = inject('eventsStores')(
           <MDBRow>
             <MDBCol lg='8'>
               {props.isOwner ? (
-                <MDBBtn onClick={handleNewEvent} color='primary'>
+                <MDBBtn
+                  onClick={handleNewEvent}
+                  color='primary'
+                  style={{
+                    margin: '0 auto',
+                    display: 'block',
+                  }}
+                >
                   Create new event
                 </MDBBtn>
               ) : null}

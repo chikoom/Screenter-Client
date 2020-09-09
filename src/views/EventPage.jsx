@@ -19,10 +19,10 @@ import { useState } from 'react'
 import { shortenText, getClosestShow, formatDate } from '../utils/functions'
 import CreatorEventList from '../components/CreatorEventList'
 
-const formatShows = shows => {
-  return shows.map(show => ({
+const formatShows = (shows,eventName) => {
+  return shows.map((show) => ({
     id: show.id,
-    title: 'my event',
+    title: eventName,
     start: show.startTime,
     end: show.endTime,
   }))
@@ -279,7 +279,9 @@ const EventPage = inject(
                 <br />
                 <br />
               </MDBTypography>
-              <CreatorCard creatorDetails={creatorDetalis} />
+              <div className='event-creator-card'>
+                <CreatorCard creatorDetails={creatorDetalis} />
+              </div>
             </MDBCol>
           </MDBRow>
         </MDBContainer>
@@ -297,7 +299,7 @@ const EventPage = inject(
             <MDBCol>
               <MyCalendar
                 currentUser={currentUser}
-                shows={formatShows(store.singleEvent.shows)}
+                shows={formatShows(store.singleEvent.shows ,store.singleEvent.name)}
                 currentEvent={store.singleEvent}
                 isEventPage={true}
                 showPrice={store.singleEvent.price}

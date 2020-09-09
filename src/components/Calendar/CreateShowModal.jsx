@@ -27,13 +27,15 @@ const CreateShowModal = inject('generalStore')(props => {
   )
 
   const handleSave = () => {
-    console.log(startTime)
-    const startDate = new Date(date)
+    console.log(startTime);
+    const startDate = new Date(date);
     startDate.setHours(getTimeArray(startTime)[0])
     startDate.setMinutes(getTimeArray(startTime)[1])
-    const endDate = new Date(date)
+    startDate.setHours(startDate.getHours() + 3);
+    const endDate = new Date(date);
     endDate.setHours(getTimeArray(endTime)[0])
     endDate.setMinutes(getTimeArray(endTime)[1])
+    endDate.setHours(endDate.getHours() + 3);
     if (endDate > startDate) {
       console.log('START', startDate)
       console.log('END', endDate)

@@ -13,14 +13,19 @@ const CreatorBackground = inject("creatorStore")(observer(props => {
     const [birthday, setBirthday] = useState(creatorData.birthday)
     const [phone, setPhone] = useState(creatorData.phone)
     const [username, setUsername] = useState(creatorData.username)
+    const [firstName, setFirstName] = useState(creatorData.firstName)
+    const [lastName, setLastName] = useState(creatorData.lastName)
 
     useEffect(() => {
           setAbout(creatorData.about)
           setEmail(creatorData.email)
           setBirthday(creatorData.birthday)
           setPhone(creatorData.phone)
-          setUsername(creatorData.username)         
+          setUsername(creatorData.username)   
+          setFirstName(creatorData.firstName) 
+          setLastName(creatorData.lastName)     
       }, [creatorData])
+      
       
     const saveData = field => {
         if (field === 'about') {
@@ -53,6 +58,19 @@ const CreatorBackground = inject("creatorStore")(observer(props => {
               value: username,
             })
           }
+          if (field === 'firstName') {
+            props.creatorStore.updateCreator(creatorData.id, {
+              field: 'firstName',
+              value: firstName,
+            })
+          }
+          if (field === 'lastName') {
+            props.creatorStore.updateCreator(creatorData.id, {
+              field: 'lastName',
+              value: lastName,
+            })
+          }
+
       }
   
 
@@ -80,7 +98,49 @@ const CreatorBackground = inject("creatorStore")(observer(props => {
                     isActive={props.isEdit}
                 />
                 <br/>
-                <Rating rating={props.creator.data.rating}/>
+                <SwithField
+                    showComponent={
+                    <MDBBox tag='h1' className='lead inline'>
+                        <MDBTypography className="inline" variant="h1" tag='h1'>{firstName}</MDBTypography>
+                    </MDBBox>
+                    }
+                    editComponent={
+                        <MDBInput
+                        group={false}
+                        className='input-small'
+                        size='sm'
+                        label='Edit First Name'
+                        getValue={value => setFirstName(value)}
+                        value={firstName}
+                        />                        
+                    }
+                    updateFunction={saveData}
+                    fieldToUpdate='firstName'
+                    isActive={props.isEdit}
+                />
+                <br />
+                <SwithField
+                    showComponent={
+                    <MDBBox tag='h1' className='lead inline'>
+                        <MDBTypography className="inline" variant="h1" tag='h1'>{lastName}</MDBTypography>
+                    </MDBBox>
+                    }
+                    editComponent={
+                        <MDBInput
+                        group={false}
+                        className='input-small'
+                        size='sm'
+                        label='Edit Last Name'
+                        getValue={value => setLastName(value)}
+                        value={lastName}
+                        />                        
+                    }
+                    updateFunction={saveData}
+                    fieldToUpdate='lastName'
+                    isActive={props.isEdit}
+                />
+                <br />
+                <Rating rating={props.creator.data.Rating || 0}/>
                 <div>
                     <SwithField
                         showComponent={

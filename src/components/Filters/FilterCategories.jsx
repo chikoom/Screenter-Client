@@ -14,7 +14,7 @@ const FilterCategories = inject('generalStore')(
     useEffect(() => {
       console.log(props.generalStore.categories)
       const getCat = async () => {
-        const result = await props.generalStore.gelAllCategories()
+        // const result = await props.generalStore.gelAllCategories()
         const formatedCategories = props.generalStore.categories.map(
           category => {
             return { value: `${category.id}`, text: category.name_en }
@@ -22,7 +22,9 @@ const FilterCategories = inject('generalStore')(
         )
         setCategories(formatedCategories)
       }
-      getCat()
+      if (categories.length === 0) {
+        getCat()
+      }
     }, [props.generalStore.categories])
 
     return (

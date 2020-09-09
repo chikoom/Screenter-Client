@@ -1,7 +1,8 @@
 import React from "react";
-import { inject } from 'mobx-react'
 import axios from 'axios'
 import moment from 'moment'
+import { inject } from 'mobx-react';
+import {ToastContainer, toast} from 'mdbreact'
 
 const ReactPayPal = inject('generalStore')(props => {
   const [paid, setPaid] = React.useState(false);
@@ -14,9 +15,10 @@ const ReactPayPal = inject('generalStore')(props => {
     props.checkoutSwitch('30vh')
     
     const handleBook = () => {
-      console.log(props.generalStore.currentUser)
-      const result = props.generalStore.currentUser.bookShow(props.show.id)
-      console.log('handleBook RESULT', result)
+      props.generalStore.currentUser.bookShow(props.show.id)
+      toast.info(`congratulations!!, You've just booked a new show. Go back to your profile to check it out`, {
+        closeButton: false
+      });
     }
 
     window.paypal
@@ -76,6 +78,11 @@ const ReactPayPal = inject('generalStore')(props => {
     <div>
       <h4>Total Amount: {props.price}$ </h4>
       <div ref={paypalRef} />
+      <ToastContainer
+                hideProgressBar={true}
+                newestOnTop={true}
+                autoClose={5000}
+              />
     </div>
   );
 })

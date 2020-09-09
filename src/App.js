@@ -12,7 +12,6 @@ import Homepage from './views/Homepage'
 import EventPage from './views/EventPage'
 import About from './views/About'
 import Profile from './views/Profile'
-import ExternalApi from './views/ExternalApi'
 import { useAuth0 } from '@auth0/auth0-react'
 import history from './utils/history'
 import Creator from './views/Creator'
@@ -58,7 +57,6 @@ const App = inject('generalStore')(
             <Route exact path='/profile' component={Profile} />
             <Route exact path='/creators' exact render={() => <Creators />} />
             <Route exact path='/about' component={About} />
-            <Route exact path='/external-api' component={ExternalApi} />
             <Route
               exact
               path='/event/:id'

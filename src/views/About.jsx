@@ -20,13 +20,24 @@ const About = props => {
       <MDBContainer>
         <MDBRow>
           <MDBCol>
-            <MDBTypography tag='h1' variant='h1' className='text-center'>
-              WE ARE SCREENTERS
-            </MDBTypography>
+            <MDBRow>
+              <MDBTypography
+                tag='h1'
+                variant='h1'
+                className='text-center'
+                style={{
+                  margin: '0px auto 75px auto',
+                  borderBottom: '3px solid rgb(212 0 0)',
+                  paddingBottom: '10px',
+                }}
+              >
+                WE ARE SCREENTERS
+              </MDBTypography>
+            </MDBRow>
           </MDBCol>
         </MDBRow>
       </MDBContainer>
-      <div className='spacer'>&nbsp;</div>
+
       <MDBContainer>
         <MDBRow>
           <MDBCol>

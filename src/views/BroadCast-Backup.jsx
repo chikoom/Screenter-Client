@@ -9,7 +9,6 @@ import { useLocation } from 'react-router-dom'
 import './BroadcastRoom.css'
 import axios from 'axios'
 import { useAuth0 } from '@auth0/auth0-react'
-import EndShowModal from '../components/Broadcast/EndShowModal'
 
 const queryString = require('query-string')
 const ENDPOINT = 'https://screenters-vsv.herokuapp.com'
@@ -61,7 +60,7 @@ const Homepage = inject(
     const [myVideo, setMyVideo] = useState(null)
     const [myCreatorVideo, setMyCreatorVideo] = useState(null)
     const [myUserName, setMyUserName] = useState('')
-    const [isShowEnd, setIsShowEnd] = useState(false)
+
     const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0()
 
     // const [currentUserRole, setCurrentUserRole] = useState(null)
@@ -72,13 +71,12 @@ const Homepage = inject(
     // let currentUserID = escape(user.sub)
     let uncutUserID = null
     let currentUserID = null
-    let currentPeer = null
 
     const allVideoStreams = []
     let roomInfo = {}
     let creatorID = null
 
-    const socket = socketIOClient('http://localhost:8181')
+    const socket = socketIOClient()
 
     const myVideoObject = document.createElement('video')
     myVideoObject.muted = true
@@ -132,18 +130,13 @@ const Homepage = inject(
       socket.emit('message', msg)
     }
 
-    const endShow = () => {
-      console.log('END SHOW UP', '')
-      socket.emit('end-show')
-    }
-
     let location = useLocation()
     useEffect(() => {
-      const queryParams = queryString.parse(location.search)
-      currentUserID = getPeerUserID(queryParams.user)
+      // const queryParams = queryString.parse(location.search)
+      // currentUserID = getPeerUserID(queryParams.user)
       // console.log(currentUserID)
       // console.log(getPeerUserID(user.sub))
-      // currentUserID = getPeerUserID(user.sub)
+      currentUserID = getPeerUserID(user.sub)
       // console.log(user.nickname)
       // setMyUserName()
       const peerUserID = getPeerUserID(currentUserID)
@@ -202,24 +195,17 @@ const Homepage = inject(
                 socket.on('FromAPI', msg => {
                   console.log('SOCKET SERVER', msg)
                 })
+                socket.emit('test', 'TEST')
 
                 console.log(peerUserID)
 
                 const peer = new Peer(peerUserID, {
                   path: '/peerjs',
                   host: '/',
-                  port: 8181,
+                  port: 443,
                 })
-                currentPeer = peer
 
                 console.log(peer)
-
-                socket.on('end-show', () => {
-                  console.log('SERVER SAY END SHOW')
-                  setIsShowEnd(true)
-
-                  socket.close()
-                })
 
                 socket.on(
                   'user-conncted',
@@ -317,91 +303,85 @@ const Homepage = inject(
     }, [screenState])
 
     return (
-      <>
-        {isShowEnd && <EndShowModal />}
-
-        <div className='broadcast-page-wrapper'>
-          {(!isAuthenticated && (
+      <div className='broadcast-page-wrapper'>
+        {(!isAuthenticated && (
+          <div className='center-container'>
+            <div className='centered-inner'>
+              <MDBTypography
+                className='inline text-center white-text'
+                tag='h2'
+                variant='h2-responsive'
+              >
+                PLEASE LOG IN TO WATCH STREAM
+                <br />
+                <br />
+              </MDBTypography>
+              <MDBBtn
+                id='qsLoginBtn'
+                color='primary'
+                className='btn-margin'
+                onClick={() => loginWithRedirect()}
+              >
+                Log in
+              </MDBBtn>
+            </div>
+          </div>
+        )) ||
+          (screenState === 'initial' && (
+            <div className='center-container'>
+              <div className='centered-inner'>Loading...</div>
+            </div>
+          )) ||
+          (screenState === 'notAuth' && (
             <div className='center-container'>
               <div className='centered-inner'>
-                <MDBTypography
-                  className='inline text-center white-text'
-                  tag='h2'
-                  variant='h2-responsive'
-                >
-                  PLEASE LOG IN TO WATCH STREAM
-                  <br />
-                  <br />
-                </MDBTypography>
-                <MDBBtn
-                  id='qsLoginBtn'
-                  color='primary'
-                  className='btn-margin'
-                  onClick={() => loginWithRedirect()}
-                >
-                  Log in
-                </MDBBtn>
+                You are not authorized to watch this stream
               </div>
             </div>
           )) ||
-            (screenState === 'initial' && (
-              <div className='center-container'>
-                <div className='centered-inner'>Loading...</div>
-              </div>
-            )) ||
-            (screenState === 'notAuth' && (
-              <div className='center-container'>
-                <div className='centered-inner'>
-                  You are not authorized to watch this stream
-                </div>
-              </div>
-            )) ||
-            (screenState === 'waiting' && (
-              <div className='center-container'>
-                <div className='centered-inner'>The stream will start at:</div>
-              </div>
-            )) ||
-            (screenState === 'live' && (
-              <>
-                <div className='left-side'>
-                  <div className='main-video-wrapper'>
-                    <div id='main-video'>
-                      {myCreatorVideo && (
-                        <VideoBox
-                          // videoObject={myVideo.videoObject}
-                          videoStream={myCreatorVideo.videoStream}
-                          username={currentUserID}
-                          isCreator={true}
-                          endShow={endShow}
-                        />
-                      )}
-                    </div>
-                    <div id='secondary-video'></div>
+          (screenState === 'waiting' && (
+            <div className='center-container'>
+              <div className='centered-inner'>The stream will start at:</div>
+            </div>
+          )) ||
+          (screenState === 'live' && (
+            <>
+              <div className='left-side'>
+                <div className='main-video-wrapper'>
+                  <div id='main-video'>
+                    {myCreatorVideo && (
+                      <VideoBox
+                        // videoObject={myVideo.videoObject}
+                        videoStream={myCreatorVideo.videoStream}
+                        username={currentUserID}
+                      />
+                    )}
                   </div>
-                  <div id='participants-videos'>
-                    <div id='my-video'>
-                      {myVideo && (
-                        <VideoBox
-                          // videoObject={myVideo.videoObject}
-                          videoStream={myVideo.videoStream}
-                          username={currentUserID}
-                        />
-                      )}
-                    </div>
-                    <div className='vertical-spacer'></div>
-                    <div id='others-videos'></div>
+                  <div id='secondary-video'></div>
+                </div>
+                <div id='participants-videos'>
+                  <div id='my-video'>
+                    {myVideo && (
+                      <VideoBox
+                        // videoObject={myVideo.videoObject}
+                        videoStream={myVideo.videoStream}
+                        username={currentUserID}
+                      />
+                    )}
                   </div>
+                  <div className='vertical-spacer'></div>
+                  <div id='others-videos'></div>
                 </div>
-                <div className='right-side'>
-                  <ChatScreen
-                    username={user.nickname}
-                    sendChat={sendChatMessage}
-                  />
-                </div>
-              </>
-            ))}
-        </div>
-      </>
+              </div>
+              <div className='right-side'>
+                <ChatScreen
+                  username={user.nickname}
+                  sendChat={sendChatMessage}
+                />
+              </div>
+            </>
+          ))}
+      </div>
     )
   })
 )
@@ -451,10 +431,6 @@ const VideoBox = props => {
   const fullscreenVideo = () => {
     console.log('fullscreen main video')
   }
-  const endShow = () => {
-    console.log('END SHOW')
-    props.endShow()
-  }
   return (
     <div className='video-conatiner'>
       <div className='video-object' id={`video-${props.username}`}></div>
@@ -487,15 +463,6 @@ const VideoBox = props => {
         >
           <MDBIcon icon='desktop' size='sm' />
         </MDBBtn>
-        {props.isCreator && (
-          <MDBBtn
-            color='red'
-            className='btn-margin small-button'
-            onClick={endShow}
-          >
-            END SHOW
-          </MDBBtn>
-        )}
       </div>
     </div>
   )
@@ -509,7 +476,6 @@ const ChatScreen = props => {
         user: props.username,
         msg: e.target.value,
       })
-      e.target.value = ''
       // socket.emit('message', 'I SENT A CHAT MESSAGE')
     }
   }

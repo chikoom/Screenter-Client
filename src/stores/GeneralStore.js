@@ -20,7 +20,8 @@ export class GeneralStore {
         reviews: []
     }
 
-    constructor() {
+    constructor(listOfEvents) {
+        this.listOfEvents = listOfEvents
         this.init()
     }
     init = async () => {
@@ -29,7 +30,7 @@ export class GeneralStore {
     }
     @action async gelAllCategories() {
         let gelAllCategories = await axios.get(
-            `http://localhost:8080/api/creators/general/details`
+            `${process.env.REACT_APP_PROD_URL}/api/creators/general/details`
         )
         console.log(gelAllCategories.data.categories)
         gelAllCategories.data.categories.forEach(c => {
@@ -38,7 +39,7 @@ export class GeneralStore {
     }
 
     @action async getUserById(userId) {
-        let getUserById = await axios.get(`http://localhost:8080/api/users/${userId}`)
+        let getUserById = await axios.get(`${process.env.REACT_APP_PROD_URL}/api/users/${userId}`)
         return getUserById
     }
 
@@ -48,7 +49,7 @@ export class GeneralStore {
 
     @action async addShow(showData) {
         console.log(showData)
-        let addNewShow = await axios.post(`http://localhost:8080/api/events/show`, showData)
+        let addNewShow = await axios.post(`${process.env.REACT_APP_PROD_URL}/api/events/show`, showData)
         console.log(addNewShow)
         this.singleEvent.shows.push(addNewShow.data)
         let currentShowId = addNewShow.data.id
@@ -60,13 +61,13 @@ export class GeneralStore {
             endTime : addNewShow.data.endTime,
             participants : []
         }
-        let addUserToMongoose = await axios.post(`http://localhost:8181/broadCast/${currentShowId}` , dataAboutTheShow)
+        let addUserToMongoose = await axios.post(`https://screenters-vsv.herokuapp.com/broadCast/${currentShowId}` , dataAboutTheShow)
         console.log(addUserToMongoose)
     }
 
 
     @action async deleteShow(showId, eventId) {
-        let deleteShow = await axios.delete(`http://localhost:8080/api/events?showId=${showId}`)
+        let deleteShow = await axios.delete(`${process.env.REACT_APP_PROD_URL}/api/events?showId=${showId}`)
         console.log(deleteShow)
         if (deleteShow){
             let deleteShowIndex = this.singleEvent.shows.findIndex(show => parseInt(show.id) === parseInt(showId))
@@ -88,9 +89,7 @@ export class GeneralStore {
 
     @action async checkUserInDataBase(user) {
         const userId = user.sub
-        console.log(userId)
-        const returnedUser = await axios.get(`http://localhost:8080/api/users/${userId}`)
-        console.log(returnedUser)
+        const returnedUser = await axios.get(`${process.env.REACT_APP_PROD_URL}/api/users/${userId}`)
         if (returnedUser.data) {
             // id, firstName, lastName, username, imageURL, videoURL, email,
             //  birthday, memberSince, gender, about, userRole, isAuthorized, phone
@@ -143,7 +142,7 @@ export class GeneralStore {
         )
         console.log(insertUsesData)
 
-        let userDetails = await axios.post(`http://localhost:8080/api/users`, insertUsesData)
+        let userDetails = await axios.post(`${process.env.REACT_APP_PROD_URL}/api/users`, insertUsesData)
         console.log(userDetails)
         if (userDetails.data) {
             this.currentUser = userDetails.data
@@ -153,12 +152,12 @@ export class GeneralStore {
     }
 
     @action async getAllCreators() {
-        let getAllCreators = await axios.get(`http://localhost:8080/api/creators?isEvents=1&isShows=1`)
+        let getAllCreators = await axios.get(`${process.env.REACT_APP_PROD_URL}/api/creators?isEvents=1&isShows=1`)
         this.AllCreators = [...getAllCreators.data]
     }
 
     @action async getCreatorById(creatorId) {
-        let getCreatorById = await axios.get(`http://localhost:8080/api/creators/${creatorId}`)
+        let getCreatorById = await axios.get(`${process.env.REACT_APP_PROD_URL}/api/creators/${creatorId}`)
         return getCreatorById
     }
 
@@ -172,7 +171,7 @@ export class GeneralStore {
 
     @action async getEventById(eventId) {
         let getEventById = await axios.get(
-            `http://localhost:8080/api/events/${eventId}`
+            `${process.env.REACT_APP_PROD_URL}/api/events/${eventId}`
         )
         getEventById = getEventById.data
         this.singleEvent = getEventById
@@ -181,7 +180,7 @@ export class GeneralStore {
 
 
     @action async deleteEvent(eventId) {
-        let deleteEvent = await axios.delete(`http://localhost:8080/api/events?eventId=${eventId}`)
+        let deleteEvent = await axios.delete(`${process.env.REACT_APP_PROD_URL}/api/events?eventId=${eventId}`)
         let deleteEventFromList = this.listOfEvents.listOfEvents.findindex(deleteId => deleteId.id === eventId)
         this.listOfEvents.listOfEvents.splice(deleteEventFromList, 1)
     }
@@ -190,7 +189,7 @@ export class GeneralStore {
 
     @action async updateEvent(eventId, eventData) {
 
-        let updateEvent = await axios.put(`http://localhost:8080/api/events/${eventId}`, eventData)
+        let updateEvent = await axios.put(`${process.env.REACT_APP_PROD_URL}/api/events/${eventId}`, eventData)
         if (updateEvent.data) {
             let key = eventData.field
 
@@ -214,24 +213,24 @@ export class GeneralStore {
 
 
     @action async postReviewShows(showId, showReview) {
-        let result = await axios.post(`http://localhost:8080/api/reviews/show`)
+        let result = await axios.post(`${process.env.REACT_APP_PROD_URL}/api/reviews/show`)
         console.log(result)
     }
 
     @action async getReviewShows(reviewId) {
-        let result = await axios.get(`http://localhost:8080/api/reviews/${reviewId}`)
+        let result = await axios.get(`${process.env.REACT_APP_PROD_URL}/api/reviews/${reviewId}`)
         console.log(result)
     }
 
 
     @action async getReviewCreator(reviewId) {
-        let result = await axios.get(`http://localhost:8080/api/reviews/${reviewId}`)
+        let result = await axios.get(`${process.env.REACT_APP_PROD_URL}/api/reviews/${reviewId}`)
         console.log(result)
     }
 
     @action async postReviewCreator(creatorId, creatorReview) {
         //userId , showId , review data to save in this store 
-        let result = await axios.post(`http://localhost:8080/api/reviews/creator`)
+        let result = await axios.post(`${process.env.REACT_APP_PROD_URL}/api/reviews/creator`)
         console.log(result)
     }
 

@@ -1,5 +1,7 @@
 import React from 'react'
 import {
+  toast,
+  ToastContainer,
   MDBContainer,
   MDBBtn,
   MDBModal,
@@ -11,15 +13,21 @@ import { useState } from 'react'
 import { inject } from 'mobx-react'
 import { formatDate } from '../../utils/functions'
 import Paypal from '../Paypal/PaypalBtn'
+import { useAuth0 } from '@auth0/auth0-react';
 import './BookEventModal.css'
 
 const BookModal = inject('generalStore')(props => {
+  const { user, isAuthenticated, loginWithPopup } = useAuth0();
   const [isOpen, setIsOpen] = useState(true)
   const [isCheckOut, setisCheckOut] = useState('15vh')
 
-const checkoutSwitch = (size) =>{
-  setisCheckOut(size)
-}
+  const checkoutSwitch = (size) => {
+    if (!isAuthenticated) {
+      loginWithPopup()
+    } else {
+      setisCheckOut(size)
+    }
+  }
 
   const toggle = () => {
     setIsOpen(!isOpen)
@@ -29,13 +37,17 @@ const checkoutSwitch = (size) =>{
     props.generalStore.deleteShow(props.show.id, props.currentEvent.id)
     setIsOpen(false)
   }
-  // const handleBook = () => {
-  //   console.log(props.generalStore.currentUser)
-  //   const result = props.generalStore.currentUser.bookShow(props.show.id)
-  //   console.log('handleBook RESULT', result)
-  // }
+  const handleBook = async () => {
+    let currentUserHere = await props.generalStore.currentUser
+    const result = currentUserHere.bookShow(props.show.id)
+    toast.info(`congratulations!!, You've just booked a new show. Go back to your profile to check it out`, {
+      closeButton: false
+    });
+    console.log('handleBook RESULT', result)
+  }
   const userEditor = props.userEditor
   console.log('isUserEditorisUserEditorisUserEditor', props.currentEvent)
+  console.log(props.showPrice)
   return (
     <MDBContainer>
       <MDBModal isOpen={isOpen} toggle={toggle} centered>
@@ -44,28 +56,35 @@ const checkoutSwitch = (size) =>{
           <p>Start: {formatDate(props.show.start)}</p>
           <p>End: {formatDate(props.show.end)}</p>
           <p>Price: ${props.showPrice}</p>
-          <p>user id: {props.currentUser.userID}</p>
         </MDBModalBody>
-        <MDBModalFooter style={{height:isCheckOut}}>
+        <MDBModalFooter style={{ height: isCheckOut }}>
           {(userEditor && (
             <MDBBtn onClick={deleteShow} color='danger'>
               DELETE
             </MDBBtn>
-          )) || (
+          )) || (props.showPrice == "0" ?
             <>
-              {/* <MDBBtn onClick={handleBook} color='primary'>
+              <MDBBtn onClick={handleBook} color='primary'>
                 BOOK NOW
-              </MDBBtn> */}
+              </MDBBtn>
+            </>
+            :
+            <>
               <Paypal currentUser={props.currentUser}
-                      price={props.showPrice}
-                      show={props.show}
-                      checkoutSwitch={checkoutSwitch}
+                price={props.showPrice}
+                show={props.show}
+                checkoutSwitch={checkoutSwitch}
               />
             </>
-          )}
+            )}
         </MDBModalFooter>
       </MDBModal>
-    </MDBContainer>
+      <ToastContainer
+                hideProgressBar={true}
+                newestOnTop={true}
+                autoClose={5000}
+              />
+    </MDBContainer >
   )
 })
 
@@ -87,4 +106,6 @@ const checkoutSwitch = (size) =>{
 //   const minutes = date.getMinutes()
 //   return `${dayString} | ${dateString} | ${hour}:${minutes} `
 // }
+
+
 export default BookModal
