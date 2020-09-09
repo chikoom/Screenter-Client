@@ -114,6 +114,7 @@ export class Creator extends User {
     )
   }
   @action async updateCreator(creatorId, data) {
+    console.log(creatorId , data )
     let updateCreator = await axios.put(
       `${process.env.REACT_APP_PROD_URL}/api/creators/${creatorId}`,
       data
