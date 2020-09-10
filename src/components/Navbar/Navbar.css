@@ -9,3 +9,6 @@
 .nav-link.active {
   border-bottom: 2px solid #eee;
 }
+.show.dropdown-menu {
+  left: -40px;
+}
