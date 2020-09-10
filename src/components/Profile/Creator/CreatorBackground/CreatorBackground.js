@@ -125,6 +125,7 @@ const CreatorBackground = inject("creatorStore")(observer(props => {
                         <MDBTypography className="inline" variant="h1" tag='h1'>{lastName}</MDBTypography>
                     </MDBBox>
                     }
+                    
                     editComponent={
                         <MDBInput
                         group={false}
