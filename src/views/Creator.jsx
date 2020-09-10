@@ -141,7 +141,7 @@ const Creator = inject(
                   variant='h1'
                   className='text-center'
                   style={{
-                    margin: '0px auto 10px auto',
+                    margin: '60px auto 10px auto',
                     borderBottom: '3px solid rgb(212 0 0)',
                     paddingBottom: '10px',
                   }}
