@@ -78,7 +78,7 @@ const Homepage = inject(
     let roomInfo = {}
     let creatorID = null
 
-    const socket = socketIOClient('http://localhost:8181')
+    const socket = socketIOClient()
 
     const myVideoObject = document.createElement('video')
     myVideoObject.muted = true
@@ -139,11 +139,11 @@ const Homepage = inject(
 
     let location = useLocation()
     useEffect(() => {
-      const queryParams = queryString.parse(location.search)
-      currentUserID = getPeerUserID(queryParams.user)
+      // const queryParams = queryString.parse(location.search)
+      // currentUserID = getPeerUserID(queryParams.user)
       // console.log(currentUserID)
       // console.log(getPeerUserID(user.sub))
-      // currentUserID = getPeerUserID(user.sub)
+      currentUserID = getPeerUserID(user.sub)
       // console.log(user.nickname)
       // setMyUserName()
       const peerUserID = getPeerUserID(currentUserID)
@@ -208,7 +208,7 @@ const Homepage = inject(
                 const peer = new Peer(peerUserID, {
                   path: '/peerjs',
                   host: '/',
-                  port: 8181,
+                  port: 443,
                 })
                 currentPeer = peer
 
