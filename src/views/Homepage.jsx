@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react'
 import { useHistory } from 'react-router-dom'
 import { useState } from 'react'
 import './Homepage.css'
-
+import { getClosestShow } from '../utils/functions'
 const Homepage = inject(
   'eventsStores',
   'generalStore'
@@ -15,18 +15,7 @@ const Homepage = inject(
   observer(props => {
     const history = useHistory()
     const { listOfEvents } = props.eventsStores
-    const carouselEvents = [
-      listOfEvents[2],
-      listOfEvents[5],
-      listOfEvents[6],
-      listOfEvents[0],
-    ].map(event => ({
-      id: event.id,
-      image: event.coverImgURL,
-      header: event.name,
-      text: event.description,
-      link: `/event/:${event.id}`,
-    }))
+    const [carouselEvents, setCarouselEvents] = useState([])
     const navigateToEvent = id => {
       history.push(`/event/${id}`)
     }
@@ -36,6 +25,21 @@ const Homepage = inject(
 
     useEffect(() => {
       setEventList(props.eventsStores.listOfEvents)
+      if(props.eventsStores.listOfEvents.length) {
+        const carusel = [
+          listOfEvents[2],
+          listOfEvents[5],
+          listOfEvents[6],
+          listOfEvents[0],
+        ].map(event => ({
+          id: event.id,
+          image: event.coverImgURL,
+          header: event.name,
+          text: event.description,
+          link: `/event/:${event.id}`,
+        }))  
+        setCarouselEvents(carusel)
+    }
     }, [props.eventsStores.listOfEvents])
 
     const filterEvents = query => {
@@ -61,6 +65,29 @@ const Homepage = inject(
     }
     const sortEvents = attr => {
       console.log('SORT', attr)
+      let filteredEvents = []
+      if (attr === 'Date') {
+        filteredEvents = props.eventsStores.listOfEvents.sort((a, b) => {
+          const aEventShow = getClosestShow(a.shows)
+          const bEventShow = getClosestShow(b.shows)
+          return aEventShow.getTime() - bEventShow.getTime()
+        })
+      }
+      if (attr === 'Popularity') {
+        filteredEvents = props.eventsStores.listOfEvents.sort((a, b) => {
+          const aEventRating = a.rating
+          const bEventRating = b.rating
+          return aEventRating - bEventRating
+        })
+      }
+      if (attr === 'Name') {
+        filteredEvents = props.eventsStores.listOfEvents.sort((a, b) => {
+          const aEventName = a.name
+          const bEventName = b.name
+          return aEventName.localeCompare(bEventName)
+        })
+      }
+      setEventList(filteredEvents)
     }
     // https://www.smashingmagazine.com/2020/03/infinite-scroll-lazy-image-loading-react/
 

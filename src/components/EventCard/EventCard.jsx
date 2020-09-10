@@ -41,7 +41,7 @@ const EventCard = observer(props => {
           </MDBCardTitle>
           <MDBCardText>{props.eventDetails.categoryName}</MDBCardText>
           <MDBCardText className='card-description'>
-            {shortenText(props.eventDetails.description, 20)}
+            {shortenText(props.eventDetails.description, 50)}
           </MDBCardText>
           <div className='small-text'>
             Next Screen:

@@ -8,7 +8,7 @@ import DropdownSelect from '../Inputs/DropDown'
 import { useState } from 'react'
 import './EventList.css'
 
-const selectOptions = ['Date', 'Popularity', 'Screenter']
+const selectOptions = ['Date', 'Popularity', 'Name']
 
 const EventGrid = inject('generalStore')(props => {
   // const categories = props.generalStore.categories

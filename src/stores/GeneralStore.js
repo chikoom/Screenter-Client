@@ -33,9 +33,11 @@ export class GeneralStore {
             `${process.env.REACT_APP_PROD_URL}/api/creators/general/details`
         )
         console.log(gelAllCategories.data.categories)
-        gelAllCategories.data.categories.forEach(c => {
-            this.categories.push(c)
-        })
+        if(!this.categories.length) {
+            gelAllCategories.data.categories.forEach(c => {
+                this.categories.push(c)
+            })
+        }
     }
 
     @action async getUserById(userId) {
