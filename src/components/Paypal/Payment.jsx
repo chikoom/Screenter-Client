@@ -60,8 +60,8 @@ const ReactPayPal = inject('generalStore')(props => {
     
     // If the payment has been made
     if (paid) {
-      axios.post(`http://localhost:8181/api/notification`, {
-       phone: '+972'+'0546445077'.slice(1),
+      axios.post(`http://localhost:3005/api/notification`, {
+       phone: '+972'+props.currentUser.phone.slice(1),
        showTitle: props.show.title,
        time: moment(props.show.start).subtract(6, 'days').calendar()
      })
