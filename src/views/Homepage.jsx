@@ -25,19 +25,21 @@ const Homepage = inject(
 
     useEffect(() => {
       setEventList(props.eventsStores.listOfEvents)
-      const carusel = [
-        listOfEvents[2],
-        listOfEvents[5],
-        listOfEvents[6],
-        listOfEvents[0],
-      ].map(event => ({
-        id: event.id,
-        image: event.coverImgURL,
-        header: event.name,
-        text: event.description,
-        link: `/event/:${event.id}`,
-      }))  
-      setCarouselEvents(carusel)
+      if(props.eventsStores.listOfEvents.length) {
+        const carusel = [
+          listOfEvents[2],
+          listOfEvents[5],
+          listOfEvents[6],
+          listOfEvents[0],
+        ].map(event => ({
+          id: event.id,
+          image: event.coverImgURL,
+          header: event.name,
+          text: event.description,
+          link: `/event/:${event.id}`,
+        }))  
+        setCarouselEvents(carusel)
+    }
     }, [props.eventsStores.listOfEvents])
 
     const filterEvents = query => {
