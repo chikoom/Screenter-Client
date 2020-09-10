@@ -35,7 +35,7 @@ const EventCard = observer(props => {
           waves
         />
         <MDBCardBody>
-          <Rating rating={5} />
+          <Rating rating={props.eventDetails.rating} />
           <MDBCardTitle>
             {shortenText(props.eventDetails.name, 25)}
           </MDBCardTitle>

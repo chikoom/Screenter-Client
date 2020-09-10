@@ -10,12 +10,13 @@ const ReactPayPal = inject('generalStore')(props => {
   const paypalRef = React.useRef();
 
   // To show PayPal buttons once the component loads
-  console.log('+972'+props.currentUser.phone.slice(1))
   React.useEffect(() => {
     props.checkoutSwitch('30vh')
     
-    const handleBook = () => {
-      props.generalStore.currentUser.bookShow(props.show.id)
+    const handleBook = async() => {
+      const handle =await props.generalStore.currentUser
+      // console.log('+972'+props.currentUser.phone.slice(1))
+      handle.bookShow(props.show.id)
       toast.info(`congratulations!!, You've just booked a new show. Go back to your profile to check it out`, {
         closeButton: false
       });
@@ -60,7 +61,7 @@ const ReactPayPal = inject('generalStore')(props => {
     // If the payment has been made
     if (paid) {
       axios.post(`http://localhost:8181/api/notification`, {
-       phone: '+972'+props.currentUser.phone.slice(1),
+       phone: '+972'+'0546445077'.slice(1),
        showTitle: props.show.title,
        time: moment(props.show.start).subtract(6, 'days').calendar()
      })
