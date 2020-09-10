@@ -22,7 +22,23 @@ export class User {
     @observable pastShows = []
 
 
-    constructor(id, firstName, lastName, username, imageURL, videoURL, email, birthday, memberSince, gender, about, userRole, isAuthorized, phone, futureShows, pastShows) {
+    constructor(id,
+        firstName,
+        lastName,
+        username,
+        imageURL,
+        videoURL,
+        email,
+        birthday,
+        memberSince,
+        gender,
+        about,
+        userRole,
+        isAuthorized,
+        phone,
+        futureShows,
+        pastShows
+    ) {
         this.id = id
         this.firstName = firstName
         this.lastName = lastName
@@ -68,7 +84,6 @@ export class User {
                     showEventID: resultShowFromDB.data.showEventID
                 }
             )
-
             let addUserToShowImMongoose = {
                 userID: userID,
                 isBook: true
