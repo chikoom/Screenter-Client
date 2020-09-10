@@ -23,14 +23,16 @@ export class Events {
         for (let d of getData.data) {
             let counter = 0
             const rating = d.shows.reduce((total, item) => {
-                if (item.rating) {
+                if (item.rating&&(total + item.rating)<6) {
                     counter++
-                    return total + item.rating
+                    return parseInt(total + item.rating)
                 } else {
                     return total
                 }
             }, 0)
+            console.log(rating)
             const avgRating = counter == 0 ? 5 : rating / counter
+            console.log(avgRating)
 
             newEvents.push(
                 new Event(

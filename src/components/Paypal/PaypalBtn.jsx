@@ -7,6 +7,7 @@ import './Paypal.css'
 const Paypal = observer(props => {
 
   const [checkout, setCheckout] = React.useState(false);
+  console.log(props.currentUser)
 
   return (
     <div className="paymentBtn">
