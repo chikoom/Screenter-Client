@@ -30,13 +30,16 @@ const FilterCategories = inject('generalStore')(
     return (
       <MDBRow fluid='true'>
         <MDBCol fluid='true'>
-          {categories.length && (
+          {categories.length ? (
             <MultiSelect
               selected='Select:'
               label='Categories'
               options={categories}
               categoryFunction={props.categoryFunction}
             />
+          ):(
+            <>
+            </>
           )}
         </MDBCol>
       </MDBRow>
