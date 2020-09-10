@@ -15,18 +15,7 @@ const Homepage = inject(
   observer(props => {
     const history = useHistory()
     const { listOfEvents } = props.eventsStores
-    const carouselEvents = [
-      listOfEvents[2],
-      listOfEvents[5],
-      listOfEvents[6],
-      listOfEvents[0],
-    ].map(event => ({
-      id: event.id,
-      image: event.coverImgURL,
-      header: event.name,
-      text: event.description,
-      link: `/event/:${event.id}`,
-    }))
+    const [carouselEvents, setCarouselEvents] = useState([])
     const navigateToEvent = id => {
       history.push(`/event/${id}`)
     }
@@ -36,6 +25,19 @@ const Homepage = inject(
 
     useEffect(() => {
       setEventList(props.eventsStores.listOfEvents)
+      const carusel = [
+        listOfEvents[2],
+        listOfEvents[5],
+        listOfEvents[6],
+        listOfEvents[0],
+      ].map(event => ({
+        id: event.id,
+        image: event.coverImgURL,
+        header: event.name,
+        text: event.description,
+        link: `/event/:${event.id}`,
+      }))  
+      setCarouselEvents(carusel)
     }, [props.eventsStores.listOfEvents])
 
     const filterEvents = query => {
