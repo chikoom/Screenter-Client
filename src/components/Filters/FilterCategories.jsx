@@ -19,13 +19,15 @@ const FilterCategories = inject('generalStore')(
           category => {
             return { value: `${category.id}`, text: category.name_en }
           }
+          
         )
         setCategories(formatedCategories)
       }
       if (categories.length === 0) {
-        getCat()
+        props.generalStore.gelAllCategories().then(getCat);
       }
     }, [props.generalStore.categories])
+    
 
     return (
       <MDBRow fluid='true'>
