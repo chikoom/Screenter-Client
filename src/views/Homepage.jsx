@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react'
 import { useHistory } from 'react-router-dom'
 import { useState } from 'react'
 import './Homepage.css'
-
+import { getClosestShow } from '../utils/functions'
 const Homepage = inject(
   'eventsStores',
   'generalStore'
@@ -61,6 +61,29 @@ const Homepage = inject(
     }
     const sortEvents = attr => {
       console.log('SORT', attr)
+      let filteredEvents = []
+      if (attr === 'Date') {
+        filteredEvents = props.eventsStores.listOfEvents.sort((a, b) => {
+          const aEventShow = getClosestShow(a.shows)
+          const bEventShow = getClosestShow(b.shows)
+          return aEventShow.getTime() - bEventShow.getTime()
+        })
+      }
+      if (attr === 'Popularity') {
+        filteredEvents = props.eventsStores.listOfEvents.sort((a, b) => {
+          const aEventRating = a.rating
+          const bEventRating = b.rating
+          return aEventRating - bEventRating
+        })
+      }
+      if (attr === 'Name') {
+        filteredEvents = props.eventsStores.listOfEvents.sort((a, b) => {
+          const aEventName = a.name
+          const bEventName = b.name
+          return aEventName.localeCompare(bEventName)
+        })
+      }
+      setEventList(filteredEvents)
     }
     // https://www.smashingmagazine.com/2020/03/infinite-scroll-lazy-image-loading-react/
 
